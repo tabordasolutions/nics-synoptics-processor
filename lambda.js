@@ -7,7 +7,8 @@ let {dbconnectionparams, synopticsparams} = require('./connections'); //default 
 let handler = function(event, context, callback) {
     if ( dbconnectionparams.passworddecrypted && synopticsparams.tokendecrypted ) {
         processor.etlsynopticsdata(dbconnectionparams,synopticsparams)
-            .then(() => console.log('Done.'))
+            .then(result => processor.prunestaledata(moment(result.timestamp),dbconnectionparams))
+            .then(result => console.log(result + '. Done.'))
             .catch(e => {
                 console.error('Error during processing:', e);
                 callback(e);
