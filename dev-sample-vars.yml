@@ -1,0 +1,16 @@
+environment:
+    PGHOST: "devhost"
+    PGUSER: "postgis-user-id"
+    PGDATABASE: "nics.datafeeds"
+    SYNOPTICSHOST: "https://api.synopticlabs.org/v2/stations/latest"
+events:
+    - schedule: rate(60 minutes)
+kmskey: "arn:.....put your kms key for ssm decryption here"
+
+vpc:
+    securityGroupIds:
+      - sg-1
+      - sg-2
+    subnetIds:
+      - subnet-1
+      - subnet-2
