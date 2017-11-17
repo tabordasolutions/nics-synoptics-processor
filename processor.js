@@ -49,7 +49,7 @@ let transformfeatures = (svcresponsejson) => {
 
     return features.filter(feature => (feature.properties && feature.geometry.type === 'Point' && feature.properties.stid))
         .map(feature => {
-            let fcopy = {...feature};
+            let fcopy = JSON.parse(JSON.stringify(feature)); //low frills copy since node6 spread operator doesn't work on objects.
             fcopy.properties.qc_status = createQcStatusString(fcopy,qcshortnames);
             fcopy.id = feature.properties.stid;
             fcopy.properties.air_temp = Math.round(feature.properties.air_temp);
