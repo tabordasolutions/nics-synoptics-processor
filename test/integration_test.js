@@ -11,6 +11,7 @@ let {dbconnectionparams, synopticsparams} = require('../connections'); //default
 describe('All Integration Tests', function() {
     describe('Synoptics Module', function() {
         describe('Request synoptics Json Data', function() {
+            this.timeout(3000); //using an arrow function will break this.
             it('Should return a result', function() {
                 let requestparams = `?token=${synopticsparams.token}&network=1,2&output=geojson&state=CA,NV,AZ,OR&units=temp|f,speed|mph&vars=air_temp,wind_speed,wind_direction,wind_gust,dew_point_temperature,relative_humidity&obtimezone=local&qc_flags=on&qc_remove_data=off`;
 
