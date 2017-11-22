@@ -8,7 +8,7 @@ const feedname = 'synoptics';
 let etlsynopticsdata = (dboptions = dbconnectionparams, synopticsoptions = synopticsparams) => new Promise((resolves,rejects) => {
 
     const token = synopticsoptions.token;
-    let requestparams = `?token=${token}&network=1,2&output=geojson&state=CA,NV,AZ,OR&units=temp|f,speed|mph&vars=air_temp,wind_speed,wind_direction,wind_gust,dew_point_temperature,relative_humidity&obtimezone=local&qc_flags=on&qc_remove_data=off`;
+    let requestparams = `?token=${token}&network=1,2&recent=60&output=geojson&state=CA,NV,AZ,OR&units=temp|f,speed|mph&vars=air_temp,wind_speed,wind_direction,wind_gust,dew_point_temperature,relative_humidity&obtimezone=local&qc_flags=on&qc_remove_data=off`;
     console.log('Requesting weather station data from: ', synopticsoptions.host);
 
     requestJsonData(synopticsoptions.host + requestparams)
