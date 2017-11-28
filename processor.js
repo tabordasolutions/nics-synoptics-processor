@@ -2,7 +2,7 @@ let db = require('./db');
 let {dbconnectionparams, synopticsparams} = require('./connections'); //default connections.
 let requestp = require('request-promise-native'); //Adding native ES6 promises to request.
 
-const moment = require('moment');
+const moment = require('moment-timezone');
 const feedname = 'synoptics';
 
 let etlsynopticsdata = (dboptions = dbconnectionparams, synopticsoptions = synopticsparams) => new Promise((resolves,rejects) => {
@@ -76,14 +76,14 @@ let createQcStatusString = (feature, qcnameslookup) => {
 };
 
 let createDescription = (feature) => {
-    let createEntry = (title, val) => `<b>${title}</b> ${val || 'N/A'}<br/>`;
+    let createEntry = (title, val) => `<b>${title} </b>${val || 'N/A'}<br/>`;
     return createEntry(feature.properties.name, `${feature.properties.stid} ${feature.properties.status}`) +
-        createEntry(feature.properties.date_time, ' ') +
+        createEntry(moment(feature.properties.date_time).tz('America/Los_Angeles').format('l LTS z'), ' ') +
         createEntry('Wind:', `${createFriendlyWindDirection(feature.properties.wind_direction)} ${feature.properties.wind_speed} MPH`) +
-        createEntry('Gust:', feature.properties.wind_gust || 'N/A' + ' MPH') +
-        createEntry('Temperature:', feature.properties.air_temp || 'N/A' + ' F') +
-        createEntry('Humidity:', feature.properties.relative_humidity || 'N/A' + ' &#37;') +
-        createEntry('Dew Point:', feature.properties.dew_point_temperature_d || 'N/A' + ' F') +
+        createEntry('Peak Gust:', `${feature.properties.wind_gust || 'N/A'} MPH`) +
+        createEntry('Temperature:', `${feature.properties.air_temp || 'N/A'} F`) +
+        createEntry('Dew Point:', `${feature.properties.dew_point_temperature_d || 'N/A'} F`) +
+        createEntry('Humidity:', `${feature.properties.relative_humidity || 'N/A'} &#37;`) +
         createEntry(`<a href="${feature.properties.more_observations}">More Information</a>`,' ');
 
 
