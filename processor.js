@@ -79,11 +79,11 @@ let createDescription = (feature) => {
     let createEntry = (title, val) => `<b>${title} </b>${val || 'N/A'}<br/>`;
     return createEntry(feature.properties.name, `${feature.properties.stid} ${feature.properties.status}`) +
         createEntry(moment(feature.properties.date_time).tz('America/Los_Angeles').format('l LTS z'), ' ') +
-        createEntry('Wind:', `${createFriendlyWindDirection(feature.properties.wind_direction)} ${feature.properties.wind_speed} MPH`) +
-        createEntry('Peak Gust:', `${feature.properties.wind_gust || 'N/A'} MPH`) +
-        createEntry('Temperature:', `${feature.properties.air_temp || 'N/A'} F`) +
-        createEntry('Dew Point:', `${feature.properties.dew_point_temperature_d || 'N/A'} F`) +
-        createEntry('Humidity:', `${feature.properties.relative_humidity || 'N/A'} &#37;`) +
+        createEntry('Wind:', `${createFriendlyWindDirection(feature.properties.wind_direction)} ${isNaN(feature.properties.wind_speed) ? 'N/A' : feature.properties.wind_speed + ' MPH'}`) +
+        createEntry('Peak Gust:', isNaN(feature.properties.wind_gust) ? 'N/A' : feature.properties.wind_gust + ' MPH') +
+        createEntry('Temperature:', isNaN(feature.properties.air_temp) ? 'N/A' : feature.properties.air_temp + ' F') +
+        createEntry('Dew Point:', isNaN(feature.properties.dew_point_temperature_d) ? 'N/A' : feature.properties.dew_point_temperature_d + ' F') +
+        createEntry('Humidity:', isNaN(feature.properties.relative_humidity) ? 'N/A' : feature.properties.relative_humidity + ' &#37;') +
         createEntry(`<a href="${feature.properties.more_observations}">More Information</a>`,' ');
 
 
@@ -107,6 +107,7 @@ module.exports = {
     prunestaledata : prunestaledata,
     transformfeatures: transformfeatures,
     createQcStatusString: createQcStatusString,
-    requestJsonData: requestJsonData
+    requestJsonData: requestJsonData,
+    createDescription: createDescription
 
 };
